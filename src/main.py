@@ -1,8 +1,9 @@
 import logging
 import sqlite3
+from settings.config import TG_TOKEN
 from aiogram import Bot, Dispatcher, types
 
-API_TOKEN = '5883070708:AAHIcmhvLJ2IAeFohKWIloXskBWspdnduqw'
+API_TOKEN = TG_TOKEN
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
