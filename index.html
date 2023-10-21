@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shop</title>
 </head>
 <body>
-sljdfn
+    <div id="main">
+        <h1>Авторизация</h1>
+    </div>
+    <form id="form">
+        <input type="text" placeholder="Имя" id="user_name">
+        <input type="text" placeholder="Фамилия" id="user_surname">
+        <input type="text" placeholder="Серия и номер паспорта" id="user_passport">
+        <input type="email" placeholder="Почта" id="user_email">
+        <input type="password" placeholder="Пароль" id="user_pass">
+        <button id="register">Зарегистрироваться</button>
+    </form>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let tg = window.Telegram.WebApp;
+        let reg = document.getElementById("register")
+
+        document.getElementById('user_name').value = tg.initDataUnsafe.user.first_name
+        document.getElementById('user_surname').value = tg.initDataUnsafe.user.last_name
+
+        reg.addEventListener("click", () =>{
+            tg.close()
+        });
+    </script>
 </body>
 </html>
