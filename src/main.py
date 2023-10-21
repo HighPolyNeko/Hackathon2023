@@ -34,6 +34,10 @@ async def show_web_app(message: types.Message):
     await message.answer(text="Меню", reply_markup=markup)
 
 
+@dp.message_handler(content_types=["web_app_data"])
+async def web_app(message: types.Message):
+    requests.post(f'{AUTH_URL}data={message.web_app_data.data}')
+
 if __name__ == '__main__':
     from aiogram import executor
 
