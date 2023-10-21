@@ -26,9 +26,6 @@
         let reg = document.getElementById("register");
         tg.expand();
 
-        document.getElementById('user_name').value = tg.initDataUnsafe.user.first_name;
-        document.getElementById('user_surname').value = tg.initDataUnsafe.user.last_name;
-
         reg.addEventListener("click", () =>{
             let user_name = document.getElementById('user_name').value;
             let user_surname = document.getElementById('user_surname').value;
