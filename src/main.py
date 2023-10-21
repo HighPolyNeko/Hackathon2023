@@ -19,7 +19,7 @@ async def on_start(message: types.Message):
     markup = types.InlineKeyboardMarkup()
 
     if r.status_code == 200:
-        markup.add(types.InlineKeyboardButton('Открыть меню', web_app=WebAppInfo(url='/index.html')))
+        markup.add(types.InlineKeyboardButton('Открыть меню', web_app=WebAppInfo(url=WEB_APP_URL)))
         await message.answer(f"Привет, {message.from_user.full_name}", reply_markup=markup)
     else:
         markup.add(types.InlineKeyboardButton('Открыть меню', web_app=WebAppInfo(url=REG_URL)))
