@@ -23,13 +23,29 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
-        let reg = document.getElementById("register")
+        let reg = document.getElementById("register");
+        tg.expand();
 
-        document.getElementById('user_name').value = tg.initDataUnsafe.user.first_name
-        document.getElementById('user_surname').value = tg.initDataUnsafe.user.last_name
+        document.getElementById('user_name').value = tg.initDataUnsafe.user.first_name;
+        document.getElementById('user_surname').value = tg.initDataUnsafe.user.last_name;
 
         reg.addEventListener("click", () =>{
-            tg.close()
+            let user_name = document.getElementById('user_name').value;
+            let user_surname = document.getElementById('user_surname').value;
+            let user_passport = document.getElementById('user_passport').value;
+            let user_email = document.getElementById('user_email').value;
+            let user_pass = document.getElementById('user_pass').value;
+
+            let data = {
+                user_name: user_name,
+                user_surname: user_surname,
+                user_passport: user_passport,
+                user_email: user_email,
+                user_pass: user_pass
+            }
+            tg.sendData(JSON.stringify(data))
+
+            tg.close();
         });
     </script>
 </body>

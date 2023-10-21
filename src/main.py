@@ -16,21 +16,21 @@ async def on_start(message: types.Message):
     user_id = message.from_user.id
     r = requests.get(f'{AUTH_URL}')
 
-    markup = types.InlineKeyboardMarkup()
+    markup = types.ReplyKeyboardMarkup()
 
     if r.status_code == 200:
         await message.answer(f"Привет, {message.from_user.full_name}", reply_markup=markup)
         await show_web_app(message)
     else:
-        markup.add(types.InlineKeyboardButton('Зарегистрироваться', web_app=WebAppInfo(url=REG_URL)))
+        markup.add(types.KeyboardButton('Зарегистрироваться', web_app=WebAppInfo(url=REG_URL)))
         await message.answer(
             f"Привет! Ты не зарегистрирован. Пожалуйста, зарегистрируйся., {message.from_user.full_name}",
             reply_markup=markup)
 
 
 async def show_web_app(message: types.Message):
-    markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton('Открыть меню', web_app=WebAppInfo(url=WEB_APP_URL)))
+    markup = types.ReplyKeyboardMarkup()
+    markup.add(types.KeyboardButton('Открыть меню', web_app=WebAppInfo(url=WEB_APP_URL)))
     await message.answer(text="Меню", reply_markup=markup)
 
 
