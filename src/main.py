@@ -18,11 +18,12 @@ async def on_start(message: types.Message):
 
     markup = types.ReplyKeyboardMarkup()
 
+    r.status_code = 4
     if r.status_code == 200:
         await message.answer(f"Привет, {message.from_user.full_name}", reply_markup=markup)
         await show_web_app(message)
     else:
-        markup.add(types.KeyboardButton('Зарегистрироваться', web_app=WebAppInfo(url=REG_URL)))
+        markup.add(types.KeyboardButton('Зарегистрироваться', web_app=WebAppInfo(url=AUTH_URL)))
         await message.answer(
             f"Привет! Ты не зарегистрирован. Пожалуйста, зарегистрируйся., {message.from_user.full_name}",
             reply_markup=markup)

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menu"></div>
+
+<script>
+  // Fetch the data from data.json in the same directory
+  fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+      const menuDiv = document.getElementById('menu');
+      data.forEach(item => {
+        const menuItemDiv = document.createElement('div');
+        menuItemDiv.className = 'menu-item';
+
+        const img = document.createElement('img');
+        img.src = item.photo;
+        img.alt = item.name;
+        menuItemDiv.appendChild(img);
+
+        const span = document.createElement('span');
+        span.textContent = item.name + ': $' + item.price;
+        menuItemDiv.appendChild(span);
+
+        const addButton = document.createElement('button');
+        addButton.className = 'add';
+        addButton.onclick = function() { toggleOrder(this); };
+        addButton.textContent = 'ADD';
+        menuItemDiv.appendChild(addButton);
+
+        const orderAmountDiv = document.createElement('div');
+        orderAmountDiv.className = 'order-amount';
+
+        const decrementButton = document.createElement('button');
+        decrementButton.onclick = function() { decrement(this); };
+        decrementButton.textContent = '-';
+        orderAmountDiv.appendChild(decrementButton);
+
+        const amountSpan = document.createElement('span');
+        amountSpan.textContent = '0';
+        orderAmountDiv.appendChild(amountSpan);
+
+        const incrementButton = document.createElement('button');
+        incrementButton.onclick = function() { increment(this); };
+        incrementButton.textContent = '+';
+        orderAmountDiv.appendChild(incrementButton);
+
+        menuItemDiv.appendChild(orderAmountDiv);
+        menuDiv.appendChild(menuItemDiv);
+      });
+    });
+
+        function toggleOrder(button) {
+        let orderAmount = button.nextElementSibling;
+        if (orderAmount.style.display === "none" || orderAmount.style.display === "") {
+            button.style.display = "none";
+            orderAmount.style.display = "block";
+        }
+    }
+
+
+    function increment(button) {
+    let amount = button.previousElementSibling;
+    amount.innerText = parseInt(amount.innerText) + 1;
+}
+
+function decrement(button) {
+    let amount = button.nextElementSibling;
+    if (parseInt(amount.innerText) > 0) {
+        amount.innerText = parseInt(amount.innerText) - 1;
+        if (parseInt(amount.innerText) === 0) {
+            let addBtn = button.parentElement.previousElementSibling;
+            addBtn.style.display = "block";
+            button.parentElement.style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
