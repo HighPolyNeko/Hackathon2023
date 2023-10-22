@@ -1,4 +1,8 @@
+import io
 import logging
+from tkinter import Image
+import pytesseract
+
 from settings.config import TG_TOKEN, WEB_APP_URL, AUTH_URL, REG_URL
 import requests
 from aiogram import Bot, Dispatcher, types
@@ -34,6 +38,45 @@ async def show_web_app(message: types.Message):
     markup.add(types.KeyboardButton('Открыть меню', web_app=WebAppInfo(url=WEB_APP_URL)))
     await message.answer(text="Меню", reply_markup=markup)
 
+# Define a message handler to process images and extract the number after "билета"
+@dp.message_handler(content_types=types.ContentType.PHOTO)
+async def handle_image(message: types.Message):
+    # Get the photo with the highest resolution
+    photo = message.photo[-1]
+
+    # Download the photo
+    file_id = photo.file_id
+    file_info = await bot.get_file(file_id)
+    photo_url = file_info.file_path
+
+    # Download the photo using aiohttp
+    async with bot.session.get(f'https://api.telegram.org/file/bot{API_TOKEN}/{photo_url}') as response:
+        if response.status == 200:
+            photo_data = await response.read()
+            with Image.open(io.BytesIO(photo_data)) as img:
+                # Perform OCR using Tesseract to extract text
+                text = pytesseract.image_to_string(img, lang='eng+rus', config='--oem 3 --psm 6')
+
+                # Find the number following "билета"
+                number = find_number_after_word(text, "билета")
+
+                if number:
+                    await message.reply(f"The number of ticket is: {number}")
+                else:
+                    await message.reply("No number found")
+        else:
+            await message.reply("Failed to download the image.")
+
+def find_number_after_word(text, keyword):
+    # Split the text by spaces and punctuation marks
+    words = text.split()
+
+    for i, word in enumerate(words):
+        if word == keyword and i + 1 < len(words):
+            number = words[i + 1]
+            # Remove any non-numeric characters
+            number = ''.join(filter(str.isdigit, number))
+            return number
 
 @dp.message_handler(content_types=["web_app_data"])
 async def web_app(message: types.Message):
@@ -43,3 +86,4 @@ if __name__ == '__main__':
     from aiogram import executor
 
     executor.start_polling(dp, skip_updates=True)
+
